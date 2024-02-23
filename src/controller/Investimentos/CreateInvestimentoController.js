@@ -1,5 +1,5 @@
 const { json } = require('express');
-const conexao = require('../../../db/config')
+const conexao = require('../../../db/config');
 const createInvestimentoModel = require('../../model/Investimentos/CreateInvestimentoModel');
 
 async function CreateInvestimentoController(req, res){
