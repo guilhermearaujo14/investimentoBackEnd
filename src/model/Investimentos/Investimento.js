@@ -16,4 +16,5 @@ class Investimento {
     }
 }
 
-module.exports = Investimento
+module.exports = {Investimento}
+
