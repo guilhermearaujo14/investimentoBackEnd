@@ -55,7 +55,7 @@ router.delete('/Usuario/:ID',  DeleteUsuarioController.DeleteUsuario);
  router.get('/investimentoByID/:ID', GetInvestimentoByIdController.GetInvestimentoById);
  router.get('/investimentoVenda/:USUARIO_ID', GetInvestimentosVendaByPapelController.GetInvestimentosVendaByPapelController);
  router.post('/regitrarVenda/:USUARIO_ID', RegistarVendaController.RegistrarVenda);
- router.post('/RegistrarInvestimentoByPlanilha',RegistrarInvestimentoByPlanilha.percorreLista);
+ router.post('/RegistrarInvestimentoByPlanilha/:USUARIO_ID',RegistrarInvestimentoByPlanilha.CreateInvestimentoByList);
 
  //ROTAS CONTADORES
  router.get('/contadoresByUsuario/:USUARIO_ID', GetContadoresByUsuarioId.Contadores);

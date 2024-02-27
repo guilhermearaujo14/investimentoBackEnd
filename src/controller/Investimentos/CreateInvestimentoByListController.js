@@ -1,28 +1,18 @@
 const { json, response } = require('express');
 const CreateInvestimentoByListModel = require('../../model/Investimentos/CreateInvestimentoByListModel');
 
-async function percorreLista(req, res){
+async function CreateInvestimentoByList(req, res){
+    const usuarioLogado = req.params;
     const dados = req.body;
+    
     try {
-        //console.log(dados)
-        const data = JSON.parse(dados)
-        console.log(data)
-        data.map(dado =>{
-            console.log(dado)
-        })
-
-        return res.status(200).json({message: `Lista carregada com sucesso!`})
+        const response = await CreateInvestimentoByListModel.percorreLista(dados)
+        return res.status(200).json(response)
     } catch (error) {
         console.log(error)
     }
-    /*let count = 0;
-    dados.forEach((element) => {
-        console.log(element) 
-        count +=1
-        return       
-    });*/
 }
 
 module.exports = {
-    percorreLista
+    CreateInvestimentoByList
 }
