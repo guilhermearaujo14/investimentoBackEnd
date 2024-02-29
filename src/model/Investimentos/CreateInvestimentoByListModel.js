@@ -8,7 +8,7 @@ async function percorreLista(dados, usuarioLogado){
 
         //data[0].map(async (item, index)=>{
             for (const item of data[0]) {
-                await sleep(2000);
+                await sleep(1000);
                 console.log(item)
                 let quantidade = parseFloat(item.quantidade);
                 let preco = parseFloat(item.preco);
