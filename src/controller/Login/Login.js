@@ -6,7 +6,6 @@ async function Login(req, res){
     const { CPF, SENHA } = req.body;
     const senhaInformada = SENHA;
     try {
-        console.log(senhaInformada)
 
         const retorno = await LoginModel.Login(CPF);
         const senhaCapturadaBD = retorno.usuario[0].SENHA
