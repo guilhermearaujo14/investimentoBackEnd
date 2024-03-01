@@ -2,7 +2,7 @@ const conexao = require('../../../db/config')
 const Investimento = require('./Investimento')
 
 async function RegistrarVenda(USUARIO_ID, PAPEL, QUANTIDADE, VALOR, DATA_COMPRA){
-    const con = await conexao();
+    const con = await conexao.createConnection();
     const sql = `
     SELECT USUARIO_ID, TIPO_ATIVO_ID, PAPEL, NOME_EMPRESA,SETOR, SUM(QUANTIDADE_COMPRA) - SUM(QUANTIDADE_VENDA) AS QUANTIDADE_DISPONIVEL
     FROM (
@@ -33,6 +33,8 @@ async function RegistrarVenda(USUARIO_ID, PAPEL, QUANTIDADE, VALOR, DATA_COMPRA)
         return Promise.all(VendaRegistrada);
     } catch (error) {
         return error
+    }finally{
+        conexao.closeConnection(con);
     }
 }
 
@@ -47,7 +49,7 @@ async function VerificaQuantidadePermitidaVenda(USUARIO_ID, QUANTIDADE, QUANTIDA
 }
 
 async function CreateVenda(USUARIO_ID, TIPO_ATIVO_ID, PAPEL, NOME_EMPRESA, SETOR, QUANTIDADE, VALOR, TOTAL_INVESTIDO, DATA_COMPRA){
-    const con = await conexao();
+    const con = await conexao.createConnection();
     const DATA_INCLUSAO = new Date();
     const sql = `INSERT INTO INVESTIMENTOS (USUARIO_ID, TIPO_ATIVO_ID, PAPEL, NOME_EMPRESA, SETOR, QUANTIDADE, VALOR, TOTAL_INVESTIDO, DATA_COMPRA, DATA_INCLUSAO, isCOMPRA, isVENDA) 
                  VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`;
@@ -56,6 +58,8 @@ async function CreateVenda(USUARIO_ID, TIPO_ATIVO_ID, PAPEL, NOME_EMPRESA, SETOR
         return [{isSucesso: true, msg: 'Venda registrada com sucesso!', data: result[0]}]
     } catch (error) {
         return [{isSucesso: false, msg: error}]
+    }finally{
+        conexao.closeConnection(con);
     }
 }
 

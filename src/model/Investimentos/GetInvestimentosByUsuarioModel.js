@@ -4,9 +4,9 @@ const buscaDadosPapel = require('../../../server/apiAxios');
 
 
 async function GetInvestimentosByUsuario(USUARIO_ID){
+    const con = await conexao.createConnection();
     let data = []
     try {
-        const con = await conexao();
         const sql = 
         `
         SELECT PAPEL, SUM(QUANTIDADE_COMPRA) - SUM(QUANTIDADE_VENDA) AS QUANTIDADE, SUM(TOTAL_INVESTIDO_COMPRA) - SUM(TOTAL_INVESTIDO_VENDA) AS  TOTAL_INVESTIDO, 
@@ -31,9 +31,6 @@ async function GetInvestimentosByUsuario(USUARIO_ID){
         )T1 GROUP BY PAPEL
         HAVING QUANTIDADE > 0
         `
-
-        
-
         const result = await con.execute(sql, [USUARIO_ID, USUARIO_ID]);
         const investimentos = result[0];
         data = await investimentos.map( async (obj) =>{
@@ -53,6 +50,8 @@ async function GetInvestimentosByUsuario(USUARIO_ID){
         return Promise.all(data);
     } catch (error) {
         return "Ops... Não foi possivel realizar pesquisa :( => "+error
+    }finally{
+        conexao.closeConnection(con);
     }
 }
 

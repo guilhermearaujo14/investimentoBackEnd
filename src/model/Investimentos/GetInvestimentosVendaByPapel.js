@@ -2,7 +2,7 @@ const conexao = require('../../../db/config')
 const buscaDadosPapel = require('../../../server/apiAxios');
 
 async function GetInvestimentosVendaByPapel(USUARIO_ID, PAPEL){
-    const con = await conexao();
+    const con = await conexao.createConnection();
     let data = [];
 try {
     const sql = 
@@ -50,6 +50,8 @@ try {
 } catch (error) {
     console.log(error)
     return {message: error}
+}finally{
+    conexao.closeConnection(con);
 }
 }
 module.exports = {

@@ -3,7 +3,7 @@ const conexao = require('../../../db/config');
 
 
 async function Login(CPF){
-    const con = await conexao();
+    const con = await conexao.createConnection();
     const sql = 'SELECT ID, NOME, CPF, SENHA FROM USUARIO WHERE CPF = ?'
 
     try {        
@@ -16,6 +16,8 @@ async function Login(CPF){
         }
         }catch (error) {
         return {isSucesso: false, Message: 'Ops.. Não foi possivel realizar o login :(', error}        
+    }finally{
+        conexao.closeConnection(con);
     }
     
 }

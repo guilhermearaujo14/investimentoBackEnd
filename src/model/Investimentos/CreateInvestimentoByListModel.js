@@ -8,17 +8,18 @@ async function percorreLista(dados, usuarioLogado){
 
         //data[0].map(async (item, index)=>{
             for (const item of data[0]) {
-                await sleep(1000);
-                console.log(item)
+
+                //await sleep(tempo);
+                //console.log(item)
                 let quantidade = parseFloat(item.quantidade);
                 let preco = parseFloat(item.preco);
                 let total = quantidade * preco;
-                let data = formataData(item.data)
-                let investimento = Investimento.criaInvestimento(usuarioLogado.USUARIO_ID, parseFloat(item.tipo), item.papel, '', '', quantidade, preco, total, data, new Date(), 1, 0);
-                console.log(investimento)
+                let data = await formataData(item.data)
+                let investimento = await Investimento.criaInvestimento(usuarioLogado.USUARIO_ID, parseFloat(item.tipo), item.papel, '', '', quantidade, preco, total, data, new Date(), 1, 0);
+                //console.log(investimento)
                 try {
-                    result = await CreateInvestimentoByList(investimento);    
-                    console.log(result.message)
+                    result = await CreateInvestimentoByList(investimento);   
+                    //console.log(result.message)
                 } catch (error) {
                     result = error;
                 }
@@ -32,17 +33,19 @@ async function percorreLista(dados, usuarioLogado){
 }
 
 async function CreateInvestimentoByList(investimento = new Investimento()){
-    const con = await conexao();
+    const con = await conexao.createConnection();
     const sql = 
     `INSERT INTO INVESTIMENTOS (USUARIO_ID, TIPO_ATIVO_ID, PAPEL, NOME_EMPRESA, SETOR, QUANTIDADE, VALOR, TOTAL_INVESTIDO, DATA_COMPRA, DATA_INCLUSAO, isCOMPRA, isVENDA) 
         VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`;
     try {
         const response = await con.execute(sql, [investimento.USUARIO_ID, investimento.TIPO_ATIVO_ID, investimento.PAPEL, investimento.NOME_EMPRESA, investimento.SETOR, investimento.QUANTIDADE, investimento.VALOR, investimento.TOTAL_INVESTIDO, investimento.DATA_COMPRA, investimento.DATA_INCLUSAO, investimento.isCOMPRA, investimento.isVENDA]);
         //console.log(response);
-        return {isSuceso: true, message: "Ativo inserido com sucesso!", response}
+        return {isSuceso: true, message: "Lista inserida com sucesso!", response}
     } catch (error) {
         console.log(error)
         throw new Error("Ops... Não foi possível inserir registros"+ error.message)
+    }finally{
+        conexao.closeConnection(con);
     }
 }
 

@@ -1,7 +1,7 @@
 const conexao = require('../../../db/config')
 
 async function Contadores(USUARIO_ID){
-    const con = await conexao();
+    const con = await conexao.createConnection();
     const ID = parseInt(USUARIO_ID);
     const sql = 
     `SELECT ROUND(SUM(TOTAL),2) AS TOTAL, ROUND(SUM(TOTAL_ACOES), 2) AS TOTAL_ACOES, ROUND(SUM(TOTAL_FIIS), 2) AS TOTAL_FIIS, ROUND(SUM(TOTAL_ETFS),2) AS TOTAL_ETFS, ROUND(SUM(TOTAL_BDRS),2) AS TOTAL_BDRS, 
@@ -31,6 +31,8 @@ async function Contadores(USUARIO_ID){
         return await contadores
     } catch (error) {
         return {message: 'Ops... Não foi possível recuperar os dados. :(', error}        
+    }finally{
+        conexao.closeConnection(con);
     }
 
 }

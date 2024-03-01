@@ -3,7 +3,7 @@ const conexao = require('../../../db/config')
 
 async function getUsuarioByCPF(CPF){
     try {
-        const con = await conexao();
+        const con = await conexao.createConnection();
         const sql = 'SELECT * FROM USUARIO WHERE CPF = ?';
         const resultado = await con.execute(sql, [CPF])
         if(resultado[0].length === 0){
@@ -13,6 +13,8 @@ async function getUsuarioByCPF(CPF){
         }
     } catch (error) {
         console.log(error)
+    }finally{
+        conexao.closeConnection(con);
     }
 }
 

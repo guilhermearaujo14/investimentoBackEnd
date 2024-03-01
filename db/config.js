@@ -18,8 +18,16 @@ const createConnection = async ()=>{
     }
     
 }
+
+const closeConnection = (connection)=>{
+    connection.end();
+}
     
-module.exports = createConnection;
+module.exports = {
+    createConnection,
+    closeConnection
+
+};
 
 
 

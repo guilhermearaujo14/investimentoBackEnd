@@ -4,7 +4,7 @@ const conexao = require('../../../db/config')
 
 async function CreateInvestimento(USUARIO_ID, TIPO_ATIVO_ID, PAPEL, NOME_EMPRESA, SETOR, QUANTIDADE, VALOR, DATA_COMPRA, isCOMPRA, isVENDA){
     try {
-        const con = await conexao();
+        const con = await conexao.createConnection();
         const DATA_INCLUSAO = new Date();
         const TOTAL_INVESTIDO  = QUANTIDADE*VALOR;
         PAPEL = PAPEL.toUpperCase()
@@ -14,6 +14,8 @@ async function CreateInvestimento(USUARIO_ID, TIPO_ATIVO_ID, PAPEL, NOME_EMPRESA
     } catch (error) {
         console.log(error)
         return "Ops... Erro ao inserir ativo!"
+    }finally{
+        conexao.closeConnection(con);
     }
     
 }

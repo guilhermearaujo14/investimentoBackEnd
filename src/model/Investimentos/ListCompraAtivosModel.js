@@ -1,7 +1,7 @@
 const conexao = require('../../../db/config');
 
 async function ListCompraAtivos(USUARIO_ID, PAPEL, TIPO_ATIVO_ID){
-    const con = await conexao();
+    const con = await conexao.createConnection();
     const sql = 
     `SELECT INVESTIMENTOS.ID, INVESTIMENTOS.PAPEL, INVESTIMENTOS.QUANTIDADE, INVESTIMENTOS.VALOR, INVESTIMENTOS.TOTAL_INVESTIDO,
     INVESTIMENTOS.DATA_COMPRA, TIPO_ATIVO.DESCRICAO, INVESTIMENTOS.isCOMPRA, INVESTIMENTOS.isVENDA
@@ -18,6 +18,8 @@ async function ListCompraAtivos(USUARIO_ID, PAPEL, TIPO_ATIVO_ID){
     } catch (error) {
         console.log(error)
         return 'Ops.. Não foi possível retornar resultados. :( ', error
+    }finally{
+        conexao.closeConnection(con);
     }
 }
 

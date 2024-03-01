@@ -3,7 +3,7 @@ const Investimento = require('./Investimento');
 
 
 async function GetInvestimentoById(ID){
-    const con = await conexao();
+    const con = await conexao.createConnection();
     let investimento = new Investimento();
     const sql = `SELECT * FROM INVESTIMENTOS WHERE ID = ?`
     try {
@@ -13,6 +13,8 @@ async function GetInvestimentoById(ID){
         return investimento
     } catch (error) {
         console.log(error)
+    }finally{
+        conexao.closeConnection(con);
     }
 }
 
