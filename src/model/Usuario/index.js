@@ -5,28 +5,32 @@ class Usuario{
     //BUSCA TODOS OS USUARIOS
     static async getAllUsuarios(){
             try {
-                let con = await conexao();
+                let con = await conexao.createConnection();
                 const [usuario] = await con.execute(`SELECT * FROM USUARIO`);
                 return usuario
             } catch (error) {
                 console.log('Error: '+ error)
+            }finally{
+                conexao.closeConnection(con);
             }
     }
     //PESQUISA USUARIO POR CPF
     static async getUserByCPF(CPF){
             try {
-                let con = await conexao();
+                let con = await conexao.createConnection();
                 const usuario = await con.execute('SELECT * FROM USUARIO WHERE CPF = ?', [CPF]);
                 return [usuario];
             } catch (error) {
                 return error
+            }finally{
+                conexao.closeConnection(con);
             }
     }
 
     //CRIA USUARIO
     static async createUser(NOME, CPF, DATA_NASCIMENTO, TELEFONE, EMAIL){
             try {
-                let con = await conexao();
+                let con = await conexao.createConnection();
                 const values = [NOME, CPF, DATA_NASCIMENTO, TELEFONE, EMAIL];
 
                 const usuario_cadastrado = await this.getUserByCPF(CPF)
@@ -42,13 +46,15 @@ class Usuario{
                 
             } catch (error) {
                 return "Error: não foi possível criar usuario - \n"+error
+            }finally{
+                conexao.closeConnection(con);
             }
     }
 
     //BUSCA USUARIO PELO ID
     static async getUserById(ID){
         try {
-            let con = await conexao();
+            let con = await conexao.createConnection();
             const usuario = await con.execute('SELECT * FROM USUARIO WHERE ID = ?', [ID])
             return usuario;
         } catch (error) {
@@ -59,13 +65,15 @@ class Usuario{
     //ATUALIZA USUARIO
     static async UpdateUser(ID, NOME, CPF, DATA_NASCIMENTO, TELEFONE, EMAIL){
             try {
-                let con = await conexao();
+                let con = await conexao.createConnection();
 
                 const [result] = await con.execute('UPDATE USUARIO SET NOME = ?, CPF = ?, DATA_NASCIMENTO = ?, TELEFONE = ?, EMAIL = ? WHERE ID = ?', [NOME, CPF, DATA_NASCIMENTO, TELEFONE, EMAIL, ID]);
                 //console.log(result)
                 return  [result]
             } catch (error) {
                 return 'ERROR: Não foi possivel atualiar os dados desse usuário!'
+            }finally{
+                conexao.closeConnection(con);
             }
     }
 
@@ -73,7 +81,7 @@ class Usuario{
     //DELETA USUARIO
     static async DeleteUser(ID){
             try {
-                let con = await conexao();
+                let con = await conexao.createConnection();
                 const values = ID;
                 let [usuario] = await this.getUserById(values);
                 if(usuario.length === 0 ){
@@ -84,6 +92,8 @@ class Usuario{
                 }
             } catch (error) {
                 return error
+            }finally{
+                conexao.closeConnection(con);
             }
     }
 
