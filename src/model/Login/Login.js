@@ -2,11 +2,8 @@ const conexao = require('../../../db/config');
 
 
 async function Login(CPF){
-    console.log(CPF)
     const con = await conexao.createConnection();
-    console.log('cheguei aqui')
     const sql = 'SELECT ID, NOME, CPF, SENHA FROM USUARIO WHERE CPF = ?'
-
     try {        
         const [usuario] = await con.execute(sql, [CPF])
         if(!usuario){
