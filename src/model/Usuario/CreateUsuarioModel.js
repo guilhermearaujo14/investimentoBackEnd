@@ -26,7 +26,7 @@ async function CreateUsuario(NOME, CPF, DATA_NASCIMENTO, TELEFONE, EMAIL, SENHA)
     try {
         const DATA_INCLUSAO = new Date();
 
-        const usuario = new Usuario(NOME, CPF, DATA_NASCIMENTO, TELEFONE, EMAIL, SENHA, DATA_INCLUSAO)
+        const usuario = new Usuario(NOME, CPF, DATA_NASCIMENTO, TELEFONE, EMAIL, SENHA, DATA_INCLUSAO);
         
         console.log(usuario)
 
