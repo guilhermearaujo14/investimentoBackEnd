@@ -19,7 +19,8 @@ const ListCompraAtivosController = require('./src/controller/Investimentos/ListC
 const GetInvestimentoByIdController = require('./src/controller/Investimentos/GetInvestimentoByIdController')
 const GetInvestimentosVendaByPapelController = require('./src/controller/Investimentos/GetInvestimentosVendaByPapelController');
 const RegistarVendaController = require('./src/controller/Investimentos/RegistrarVendaController');
-const RegistrarInvestimentoByPlanilha = require('./src/controller/Investimentos/CreateInvestimentoByListController')
+const RegistrarInvestimentoByPlanilha = require('./src/controller/Investimentos/CreateInvestimentoByListController');
+const GetInvestimentosByPapelAndUsuarioId = require('./src/controller/Investimentos/GetInvestimentosByPapelAndUsuarioIdController');
 
 //** IMPORTAÇÃO CONTADORES **/
 const GetContadoresByUsuarioId = require('./src/controller/Contadores/ContadoresController');
@@ -56,6 +57,7 @@ router.delete('/Usuario/:ID',  DeleteUsuarioController.DeleteUsuario);
  router.get('/investimentoVenda/:USUARIO_ID', GetInvestimentosVendaByPapelController.GetInvestimentosVendaByPapelController);
  router.post('/regitrarVenda/:USUARIO_ID', RegistarVendaController.RegistrarVenda);
  router.post('/RegistrarInvestimentoByPlanilha/:USUARIO_ID',RegistrarInvestimentoByPlanilha.CreateInvestimentoByList);
+ router.get('/movimentacoesByPapel/:USUARIO_ID/:PAPEL', GetInvestimentosByPapelAndUsuarioId.GetInvestimentosByPapelAndUsuarioId)
 
  //ROTAS CONTADORES
  router.get('/contadoresByUsuario/:USUARIO_ID', GetContadoresByUsuarioId.Contadores);
