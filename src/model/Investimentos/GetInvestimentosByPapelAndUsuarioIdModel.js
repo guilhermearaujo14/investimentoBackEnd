@@ -8,7 +8,8 @@ async function GetInvestimentosByPapelAndUsuarioId(USUARIO_ID, PAPEL){
                 FROM INVESTIMENTOS 
                 WHERE 
                     INVESTIMENTOS.USUARIO_ID = ?
-                AND INVESTIMENTOS.PAPEL = ? `;
+                AND INVESTIMENTOS.PAPEL = ? 
+                ORDER BY INVESTIMENTOS.DATA_COMPRA DESC`;
     try {
         const [response] = await con.execute(sql, [USUARIO_ID, PAPEL]);
         if(response == ''){
