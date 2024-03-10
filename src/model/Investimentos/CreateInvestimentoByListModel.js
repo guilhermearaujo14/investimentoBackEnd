@@ -15,9 +15,9 @@ async function percorreLista(dados, usuarioLogado){
                 let precoFormat = item.preco.replace(',', '.')
                 let preco = parseFloat(precoFormat);
                 let total = quantidade * preco;
-                let data = await formataData(item.data)
+                let data = formataData(item.data)
                 let investimento = await Investimento.criaInvestimento(usuarioLogado.USUARIO_ID, parseFloat(item.tipo), item.papel, '', '', quantidade, preco, total, data, new Date(), 1, 0);
-                console.log(investimento)
+                //console.log(investimento)
                 try {
                     result = await CreateInvestimentoByList(investimento);   
                     //console.log(result.message)
