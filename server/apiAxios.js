@@ -10,7 +10,7 @@ async function lerDados(papel){
             const n  = await parseFloat(data)
                 return JSON.stringify(n)
         } catch (error) {
-            console.log(error.data)
+            console.log(error.data.message)
         }}else{
             return console.log('Error: Papel não selecionado')
         }

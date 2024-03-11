@@ -9,7 +9,7 @@ async function GetInvestimentoById(ID){
     try {
         const result = await con.execute(sql, [ID])
         investimento = result[0]
-        console.log(investimento);
+        //console.log(investimento);
         return investimento
     } catch (error) {
         console.log(error)

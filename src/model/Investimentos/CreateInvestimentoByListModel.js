@@ -9,8 +9,6 @@ async function percorreLista(dados, usuarioLogado){
         //data[0].map(async (item, index)=>{
             for (const item of data[0]) {
 
-                //await sleep(tempo);
-                //console.log(item)
                 let quantidade = parseFloat(item.quantidade);
                 let precoFormat = item.preco.replace(',', '.')
                 let preco = parseFloat(precoFormat);
@@ -24,7 +22,7 @@ async function percorreLista(dados, usuarioLogado){
                 } catch (error) {
                     result = error;
                 }
-                //result = {isSucesso: true, message: 'ativo inserido com sucesso.'}
+
             }   
     return result
     } catch (error) {

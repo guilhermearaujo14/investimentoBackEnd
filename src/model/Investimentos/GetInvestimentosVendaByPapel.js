@@ -35,7 +35,7 @@ try {
 
                 let data = result[0].map(async (resultado)=>{
                     let valorAtual = await buscaDadosPapel.lerDados(resultado.PAPEL)
-                    console.log(resultado.PAPEL)
+                    //console.log(resultado.PAPEL)
 
                     if(valorAtual === undefined) valorAtual = 0
 

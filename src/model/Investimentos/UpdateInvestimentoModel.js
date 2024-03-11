@@ -8,7 +8,7 @@ try {
     await con.execute('UPDATE INVESTIMENTOS SET TIPO_ATIVO_ID = ?, PAPEL = ?, NOME_EMPRESA = ?, SETOR = ?, QUANTIDADE = ?, VALOR = ?, TOTAL_INVESTIDO = ?, DATA_COMPRA = ? WHERE ID = ?', 
     [TIPO_ATIVO_ID, PAPEL, NOME_EMPRESA, SETOR, QUANTIDADE, VALOR, TOTAL_INVESTIDO,  DATA_COMPRA, ID]);
 
-    return await 'Ativo atualizado com sucesso'
+    return 'Ativo atualizado com sucesso'
 } catch (error) {
     return 'ERROR: Não foi possível atualizar ativo... '+error
 }finally{
