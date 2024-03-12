@@ -24,6 +24,7 @@ const GetInvestimentosByPapelAndUsuarioId = require('./src/controller/Investimen
 
 //** IMPORTAÇÃO CONTADORES **/
 const GetContadoresByUsuarioId = require('./src/controller/Contadores/ContadoresController');
+const GetTotalizadoresAtuaisController = require('./src/controller/Contadores/GetTotalizadoresAtuaisController');
 
 const getAllTipoAtivos = require('./src/controller/TipoAtivo/getAllTipoAtivosController');
 
@@ -61,6 +62,7 @@ router.delete('/Usuario/:ID',  DeleteUsuarioController.DeleteUsuario);
 
  //ROTAS CONTADORES
  router.get('/contadoresByUsuario/:USUARIO_ID', GetContadoresByUsuarioId.Contadores);
+ router.get('/Totalizadores/:USUARIO_ID', GetTotalizadoresAtuaisController.GetTotalizadoresAtuais);
 
 
  //ROTAS TIPO DE ATIVOS
