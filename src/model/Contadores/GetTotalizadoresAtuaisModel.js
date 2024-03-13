@@ -3,7 +3,7 @@ const api = require('../../../server/apiAxios');
 
 async function Totalizadores(USUARIO_ID){
     const con = await conexao.createConnection();
-    const dado = [{TotalGeral: 0, TotalAcoes: 0, TotalFiis: 0, TotalETF: 0, TotalBDR: 0, PorcentagemAcoes: 0, PorcentagemFiis: 0, PorcentagemETF: 0, PorcentagemBDR:0}];
+    let dados = [];
     const sql = `SELECT 0 TOTAL_GERAL, PAPEL, SUM(QUANTIDADE) QUANTIDADE, DESCRICAO, 0 TOTAL_ATUAL 
                 FROM INVESTIMENTOS
                 JOIN TIPO_ATIVO ON (INVESTIMENTOS.TIPO_ATIVO_ID = TIPO_ATIVO.ID)
@@ -40,7 +40,27 @@ async function Totalizadores(USUARIO_ID){
         const [resp] = await con.execute(sql, [USUARIO_ID,USUARIO_ID,USUARIO_ID,USUARIO_ID]);
         
         const response = await GetValores(resp)
-        return response
+        
+        const ListAcoes = await MontaListaFiltrada(response, "Ação")
+        const totalAcoes = await somaValores(ListAcoes)
+        const ListFiis = await MontaListaFiltrada(response, "Fundo Imobiliario")
+        const totalFIIs = await somaValores(ListFiis)
+        const ListETF = await MontaListaFiltrada(response, "ETF")
+        const totalETF = await somaValores(ListETF)
+        const ListBDR = await MontaListaFiltrada(response, "BDR")
+        const totalBDR = await somaValores(ListBDR)
+        const totalGeral = await somaValores(response)
+        
+        dados = [{TotalGeral: totalGeral,
+                 TotalAcoes: totalAcoes,
+                 TotalFiis: totalFIIs,
+                 TotalETF: totalETF,
+                 TotalBDR: totalBDR,
+                 PorcentagemAcoes: ((totalAcoes/totalGeral)*100).toFixed(2),
+                 PorcentagemFiis: ((totalFIIs/totalGeral)*100).toFixed(2),
+                 PorcentagemETF: ((totalETF/totalGeral)*100).toFixed(2),
+                 PorcentagemBDR: ((totalBDR/totalGeral)*100).toFixed(2)}]
+        return dados
         
     } catch (error) {
         console.log(error)
@@ -58,14 +78,29 @@ async function GetValores(listaAtivos){
     var total = 0
     data = await listaAtivos.map(async (item)=>{
         let valor = await api.lerDados(item.PAPEL)
-        item.TOTAL_ATUAL = parseFloat(valor)*parseInt(item.QUANTIDADE)
-        if(!item.TOTAL_ATUAL) item.TOTAL_ATUAL = 0  
+        
+        if(valor == 0 || valor == null){
+            item.TOTAL_ATUAL = 0
+        }else{
+            item.TOTAL_ATUAL = parseFloat(valor)*parseInt(item.QUANTIDADE)
+        }
+        
         total = total + item.TOTAL_ATUAL
         item.TOTAL_GERAL = total
         return item;
     })
     
     return Promise.all(data)
+}
+
+async function MontaListaFiltrada(listaAtivos, tipo){
+   const listaFiltrada = listaAtivos.filter((item)=> item.DESCRICAO === tipo);
+   return listaFiltrada
+}
+
+async function somaValores(lista){ 
+   const soma = await lista.reduce((total, lista)=> total + lista.TOTAL_ATUAL, 0)
+   return soma
 }
 
 module.exports={
