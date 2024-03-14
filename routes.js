@@ -30,7 +30,7 @@ const getAllTipoAtivos = require('./src/controller/TipoAtivo/getAllTipoAtivosCon
 
 const LoginController = require('./src/controller/Login/Login');
 
-
+const apiGoogle = require('./server/ApiGoogleSheets');
 
 const app = express();
 
@@ -67,5 +67,11 @@ router.delete('/Usuario/:ID',  DeleteUsuarioController.DeleteUsuario);
 
  //ROTAS TIPO DE ATIVOS
  router.get('/tipoAtivos', getAllTipoAtivos.getAllTipoAtivos);
+
+
+
+ 
+
+ router.get('/Google/:PAPEL', apiGoogle.LerGoogleSheets);
 
 module.exports = router;

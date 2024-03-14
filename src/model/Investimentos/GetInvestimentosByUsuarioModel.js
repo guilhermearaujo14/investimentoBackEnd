@@ -1,6 +1,6 @@
 const conexao = require('../../../db/config')
 const buscaDadosPapel = require('../../../server/apiAxios');
-
+const ApiGoogleSheets = require('../../../server/ApiGoogleSheets');
 
 
 async function GetInvestimentosByUsuario(USUARIO_ID){
@@ -36,8 +36,7 @@ async function GetInvestimentosByUsuario(USUARIO_ID){
         const result = await con.execute(sql, [USUARIO_ID, USUARIO_ID]);
         const investimentos = result[0];
         data = await investimentos.map( async (obj) =>{
-            let valorAtual = await buscaDadosPapel.lerDados(obj.PAPEL)
-
+            let valorAtual = await ApiGoogleSheets.LerGoogleSheets(obj.PAPEL) 
                 if(valorAtual === undefined) valorAtual = 0  
             
             let precoMedio = await obj.TOTAL_INVESTIDO / obj.QUANTIDADE
