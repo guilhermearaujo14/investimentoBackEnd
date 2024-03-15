@@ -1,6 +1,6 @@
 const conexao = require('../../../db/config');
 const api = require('../../../server/apiAxios');
-
+const ApiGoogle = require('../../../server/ApiGoogleSheets');
 async function Totalizadores(USUARIO_ID){
     const con = await conexao.createConnection();
     let dados = [];
@@ -72,25 +72,30 @@ async function Totalizadores(USUARIO_ID){
 }
 
 
-async function GetValores(listaAtivos){
-
+async function GetValores(lista){
+    let listaAtivos = []
     let data = []
     var total = 0
-    data = await listaAtivos.map(async (item)=>{
-        let valor = await api.lerDados(item.PAPEL)
+    try {
+        listaAtivos = await ApiGoogle.LerGoogleSheets()
+        data = await lista.map(async (item)=>{
+            let valor = await ApiGoogle.GetValorAtivo(listaAtivos, item.PAPEL)
+            
+            if(valor == 0 || valor == null){
+                item.TOTAL_ATUAL = 0
+            }else{
+                item.TOTAL_ATUAL = parseFloat(valor)*parseInt(item.QUANTIDADE)
+            }
+            
+            total = total + item.TOTAL_ATUAL
+            item.TOTAL_GERAL = total
+            return item;
+        })
         
-        if(valor == 0 || valor == null){
-            item.TOTAL_ATUAL = 0
-        }else{
-            item.TOTAL_ATUAL = parseFloat(valor)*parseInt(item.QUANTIDADE)
-        }
-        
-        total = total + item.TOTAL_ATUAL
-        item.TOTAL_GERAL = total
-        return item;
-    })
-    
-    return Promise.all(data)
+        return Promise.all(data)
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 async function MontaListaFiltrada(listaAtivos, tipo){

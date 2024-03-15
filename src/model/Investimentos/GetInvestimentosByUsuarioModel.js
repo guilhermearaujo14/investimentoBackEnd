@@ -5,6 +5,7 @@ const ApiGoogleSheets = require('../../../server/ApiGoogleSheets');
 
 async function GetInvestimentosByUsuario(USUARIO_ID){
     const con = await conexao.createConnection();
+    let ListaAtivos = []
     let data = []
     try {
         const sql = 
@@ -35,8 +36,9 @@ async function GetInvestimentosByUsuario(USUARIO_ID){
         `
         const result = await con.execute(sql, [USUARIO_ID, USUARIO_ID]);
         const investimentos = result[0];
+        ListaAtivos = await ApiGoogleSheets.LerGoogleSheets();
         data = await investimentos.map( async (obj) =>{
-            let valorAtual = await ApiGoogleSheets.LerGoogleSheets(obj.PAPEL) 
+            let valorAtual = await ApiGoogleSheets.GetValorAtivo(ListaAtivos, obj.PAPEL) 
                 if(valorAtual === undefined) valorAtual = 0  
             
             let precoMedio = await obj.TOTAL_INVESTIDO / obj.QUANTIDADE

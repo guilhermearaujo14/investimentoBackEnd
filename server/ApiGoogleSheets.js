@@ -1,6 +1,6 @@
 const axios = require('axios')
 
-async function LerGoogleSheets(PAPEL){
+async function LerGoogleSheets(){
     const baseURL = `https://sheets.googleapis.com/v4/spreadsheets/${process.env.spreadsheets}/values/A1%3AB800?majorDimension=DIMENSION_UNSPECIFIED&valueRenderOption=UNFORMATTED_VALUE&key=${process.env.API_KEY}`;
     try {
         
@@ -8,9 +8,7 @@ async function LerGoogleSheets(PAPEL){
         const json = r.data.values
         const listaConvertida = await ConverteEmJson(json)
        
-        const response = await GetValorAtivo(listaConvertida, PAPEL)
-        console.log(response[0].cotacao)
-        return response[0].cotacao
+        return listaConvertida
     } catch (error) {
         console.log(error)
     }
@@ -29,12 +27,13 @@ function ConverteEmJson(data){
 
 function GetValorAtivo(lista, papel){
     const filtro = lista.filter(item => item.papel == papel)
-    return filtro
+    return filtro[0].cotacao
 }
 
 
 module.exports = {
-    LerGoogleSheets
+    LerGoogleSheets,
+    GetValorAtivo
 }
 
 
