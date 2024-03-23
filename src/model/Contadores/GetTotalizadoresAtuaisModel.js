@@ -40,7 +40,7 @@ async function Totalizadores(USUARIO_ID){
         const [resp] = await con.execute(sql, [USUARIO_ID,USUARIO_ID,USUARIO_ID,USUARIO_ID]);
         
         const response = await GetValores(resp)
-        
+
         const ListAcoes = await MontaListaFiltrada(response, "Ação")
         const totalAcoes = await somaValores(ListAcoes)
         const ListFiis = await MontaListaFiltrada(response, "Fundo Imobiliario")
@@ -78,6 +78,7 @@ async function GetValores(lista){
     var total = 0
     try {
         listaAtivos = await ApiGoogle.LerGoogleSheets()
+        
         data = await lista.map(async (item)=>{
             let valor = await ApiGoogle.GetValorAtivo(listaAtivos, item.PAPEL)
             

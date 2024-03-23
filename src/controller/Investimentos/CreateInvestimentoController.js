@@ -4,8 +4,8 @@ const createInvestimentoModel = require('../../model/Investimentos/CreateInvesti
 
 async function CreateInvestimentoController(req, res){
     try {
-        const { USUARIO_ID, TIPO_ATIVO_ID, PAPEL, NOME_EMPRESA, SETOR, QUANTIDADE, VALOR, DATA_COMPRA, isCOMPRA, isVENDA } = req.body;
-        const retorno = await createInvestimentoModel.CreateInvestimento( USUARIO_ID, TIPO_ATIVO_ID, PAPEL, NOME_EMPRESA, SETOR, QUANTIDADE, VALOR, DATA_COMPRA, isCOMPRA, isVENDA)
+        const { USUARIO_ID, PAPEL, SETOR, QUANTIDADE, VALOR, DATA_COMPRA, isCOMPRA, isVENDA } = req.body;
+        const retorno = await createInvestimentoModel.CreateInvestimento(USUARIO_ID, PAPEL, SETOR, QUANTIDADE, VALOR, DATA_COMPRA, isCOMPRA, isVENDA)
         return await res.status(201).json(retorno)
     } catch (error) {
         return await res.status(400).json("message:"+error)
